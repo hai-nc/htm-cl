@@ -5,7 +5,8 @@ A Common Lisp implementation of A.I. based on Numenta's HTM algorithms.
 
 1. SBCL (Steel-Bank Common Lisp) (tested with SBCL version 1.5.4 on GNU-Linux)
 1. quicklisp.
-1. connection to the Internet, which might be taken for granted, for quicklisp to auto-download dependencies during execution.
+1. connection to the Internet, which might be taken for granted, for quicklisp to auto-download these dependencies during execution (if not yet available):
+   1. rove
 
 
 # Usage
@@ -26,9 +27,6 @@ Then load the system:
 ## Scalar encoder
 
 This is a port of htm.core's ScalarEncoder.cpp. This library converts a floating-point number into a list of dotted pairs, each of which of the form (start-index . end-index) representing the start and end indices of the continuous sequence of 1-bits of the output bit-array. 
-
-
-Other information of the output bit-array (eg. size, resolution, radius, etc.) can be accessed via accessors of the scalar-encoder object.
 
 
 For example, to encode days of week:
@@ -56,6 +54,13 @@ When the input is periodic and the output "overflow" its maximum index, the cons
 ```
 
 Since the output bit-array has 14 bits and the sequence of 1-bits is the 12th-13th-14th bits (starting with index zero), the 14th bit is wrapped-around and becoming the 0th bit.
+
+
+The method `encode' used in these example also inferred other information of the input and output bit-array (eg. size, resolution, radius, etc.) from the given parameters. These information can be accessed via the accessors of the scalar-encoder object. For example, to get the size of the output bit-array of a scalar-encoder object whose identifier is encoder: 
+
+```lisp
+(htm-scalar-encoder:resolution encoder)
+```
 
 
 ## Testing
