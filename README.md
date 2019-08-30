@@ -25,7 +25,10 @@ Then load the system:
 
 ## Scalar encoder
 
-This is a port of htm.core's ScalarEncoder.cpp. This library converts a floating-point number into a list of dotted pairs, each of which of the form (start-index . end-index) representing the start and end indices of the continuous sequence of 1-bits of the output bit-array. When the input is periodic and the output "overflow" its maximum index, the consecutive 1-bits of the output can be wrapped around and thus the need for two dotted pairs to represent the wrapped-around sequences of 1-bits.
+This is a port of htm.core's ScalarEncoder.cpp. This library converts a floating-point number into a list of dotted pairs, each of which of the form (start-index . end-index) representing the start and end indices of the continuous sequence of 1-bits of the output bit-array. 
+
+
+Other information of the output bit-array (eg. size, resolution, radius, etc.) can be accessed via accessors of the scalar-encoder object.
 
 
 For example, to encode days of week:
@@ -43,6 +46,17 @@ For example, to encode days of week:
                    ))
       (htm-scalar-encoder:encode encoder 1.0)) ; => ((0 . 2))
 ```
+
+
+When the input is periodic and the output "overflow" its maximum index, the consecutive 1-bits of the output can be wrapped around and thus the need for two dotted pairs to represent the wrapped-around sequences of 1-bits. Continuing with the example above:
+
+
+```lisp
+(htm-scalar-encoder:encode encoder 7.0) ; => ((12 . 13) (0 . 0))
+```
+
+Since the output bit-array has 14 bits and the sequence of 1-bits is the 12th-13th-14th bits (starting with index zero), the 14th bit is wrapped-around and becoming the 0th bit.
+
 
 ## Testing
 
