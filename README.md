@@ -3,10 +3,8 @@ A Common Lisp implementation of A.I. based on Numenta's HTM algorithms.
 
 # Requirements
 
-1. SBCL (Steel-Bank Common Lisp) (tested with SBCL version 1.5.4 on GNU-Linux)
-1. quicklisp.
-1. connection to the Internet, which might be taken for granted, for quicklisp to auto-download these dependencies during execution (if not yet available):
-   1. rove
+1. SBCL (Steel-Bank Common Lisp) (tested with SBCL version 1.5.4 on GNU-Linux).
+1. quicklisp (dependencies specified in file htm-cl.asd will be auto-downloaded and installed by quicklisp).
 
 
 # Usage
@@ -45,6 +43,12 @@ For example, to encode days of week:
       (htm-scalar-encoder:encode encoder 1.0)) ; => ((0 . 2))
 ```
 
+Once initialized, the encoder object also infers other information of the input and output bit-array (eg. size, resolution, radius, etc.) from the given parameters. These information can be accessed via the accessors of the scalar-encoder object. For example, to get the size of the output bit-array of a scalar-encoder object whose identifier is encoder: 
+
+```lisp
+(htm-scalar-encoder:resolution encoder)
+```
+
 
 When the input is periodic and the output "overflow" its maximum index, the consecutive 1-bits of the output can be wrapped around and thus the need for two dotted pairs to represent the wrapped-around sequences of 1-bits. Continuing with the example above:
 
@@ -54,13 +58,6 @@ When the input is periodic and the output "overflow" its maximum index, the cons
 ```
 
 Since the output bit-array has 14 bits and the sequence of 1-bits is the 12th-13th-14th bits (starting with index zero), the 14th bit is wrapped-around and becoming the 0th bit.
-
-
-The method `encode' used in these example also inferred other information of the input and output bit-array (eg. size, resolution, radius, etc.) from the given parameters. These information can be accessed via the accessors of the scalar-encoder object. For example, to get the size of the output bit-array of a scalar-encoder object whose identifier is encoder: 
-
-```lisp
-(htm-scalar-encoder:resolution encoder)
-```
 
 
 ## Testing
